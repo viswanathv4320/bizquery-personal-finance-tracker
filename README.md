@@ -33,6 +33,8 @@ A full-stack web application for tracking personal finances, managing budgets, a
 
 ## Database Design
 
+![ER Diagram](doc/BizQuery_ERDiagram.png)
+
 Six normalized tables in **BCNF**:
 
 ```
@@ -138,6 +140,8 @@ npm start
 ---
 
 ## Team
+
+**My role (Ben Hug):** Database Design & SQL — relational schema, BCNF normalization, stored procedures, triggers, DB transactions, and query optimization via EXPLAIN ANALYZE benchmarking.
 
 | Name | Role |
 |---|---|
