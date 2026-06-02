@@ -1,0 +1,255 @@
+<!-- html for the webpage, stylesheet found here: https://getbootstrap.com/docs/5.3/getting-started/download/  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BizQuery Dashboard</title> 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-light">
+  <div class="container py-4">
+    <h1 class="mb-4 text-center">BizQuery - User Dashboard</h1>
+    
+    <!--Tabs-->
+    <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab">Home</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="budgets-tab" data-bs-toggle="tab" data-bs-target="#budgets" type="button" role="tab">Budgets</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions" type="button" role="tab">Transactions</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="categories-tab" data-bs-toggle="tab" data-bs-target="#categories" type="button" role="tab">Categories</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="reports-tab" data-bs-toggle="tab" data-bs-target="#reports" type="button" role="tab">Reports</button>
+      </li>
+    </ul>
+
+    <!--Using the Tab Content Above-->
+    <div class="tab-content" id="myTabContent">
+      
+      <!--Home-->
+      <div class="tab-pane fade show active" id="home" role="tabpanel">
+        <!--Monthly Spending Table-->
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <h3>Monthly Spending (Month to Date)</h3>
+            <table class="table table-bordered" id="monthlySpendingTable">
+              <thead>
+                <tr><th>Category</th><th>Total Spent</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        
+        <!--Pie Chart Visualization-->
+        <div class="row mb-4">
+          <div class="col-md-6 offset-md-3">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Month to Date Spending by Category</h5>
+                <canvas id="categoryPieChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Budgets-->
+      <div class="tab-pane fade" id="budgets" role="tabpanel">
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <h3>Budgets</h3>
+            <table class="table table-bordered" id="budgetTable">
+              <thead>
+                <tr><th>Category</th><th>Duration</th><th>Limit</th><th>Constraint</th><th>Actions</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <h4>Add Budget</h4>
+            <form id="budgetForm">
+              <input type="number" name="categoryID" placeholder="Category ID" class="form-control mb-2" required />
+              <input type="text" name="duration" placeholder="Duration (e.g. Monthly)" class="form-control mb-2" required />
+              <input type="number" step="0.01" name="budgetLimit" placeholder="Budget Limit" class="form-control mb-2" required />
+              <input type="text" name="constraint" placeholder="Constraint (optional)" class="form-control mb-2" />
+              <button class="btn btn-success w-100">Add Budget</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!--Transactions-->
+      <div class="tab-pane fade" id="transactions" role="tabpanel">
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <h4>Add Transaction</h4>
+            <form id="transactionForm">
+              <input type="date" name="date" class="form-control mb-2" required />
+              <input type="number" step="0.01" name="amount" placeholder="Amount" class="form-control mb-2" required />
+              <input type="text" name="paymentMethod" placeholder="Payment Method" class="form-control mb-2" required />
+              <input type="text" name="notes" placeholder="Notes" class="form-control mb-2" />
+              <input type="number" name="categoryID" placeholder="Category ID" class="form-control mb-2" />
+              <button class="btn btn-primary w-100">Add Transaction</button>
+            </form>
+          </div>
+        </div>
+        
+        <hr>
+        
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <h3>Recent Transactions</h3>
+            
+            <!--filter-->
+            <div class="card mb-3">
+              <div class="card-body">
+                <h6 class="card-title">Filter Transactions</h6>
+                <form id="filterForm" class="row g-2">
+                  <div class="col-md-12">
+                    <input type="date" name="date" class="form-control form-control-sm" placeholder="Date" />
+                  </div>
+                  <div class="col-md-6">
+                    <input type="number" step="0.01" name="minAmount" class="form-control form-control-sm" placeholder="Min Amount" />
+                  </div>
+                  <div class="col-md-6">
+                    <input type="number" step="0.01" name="maxAmount" class="form-control form-control-sm" placeholder="Max Amount" />
+                  </div>
+                  <div class="col-md-6">
+                    <input type="text" name="paymentMethod" class="form-control form-control-sm" placeholder="Payment Method" />
+                  </div>
+                  <div class="col-md-6">
+                    <input type="number" name="categoryID" class="form-control form-control-sm" placeholder="Category ID" />
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-sm w-100">Apply Filters</button>
+                    <button type="button" class="btn btn-secondary btn-sm w-100 mt-1" onclick="clearFilters()">Clear Filters</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            
+            <!--current transactions-->
+            <table class="table table-bordered" id="transactionTable">
+              <thead>
+                <tr><th>Date</th><th>Amount</th><th>Method</th><th>Category</th><th>Notes</th><th>Actions</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!--Categories-->
+      <div class="tab-pane fade" id="categories" role="tabpanel">
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <h3>Categories</h3>
+            <table class="table table-bordered" id="categoryTable">
+              <thead>
+                <tr><th>CategoryID</th><th>Category</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!--Reports-->
+      <div class="tab-pane fade" id="reports" role="tabpanel">
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <h3>Advanced Features</h3>
+            
+            <!--Budget Summary-->
+            <div class="card mb-3">
+              <div class="card-header">
+                <h5>Budget Summary Report</h5>
+              </div>
+              <div class="card-body">
+                <button class="btn btn-primary mb-3" onclick="loadBudgetSummary()">Load Budget Summary</button>
+                <table class="table table-bordered" id="budgetSummaryTable">
+                  <thead>
+                    <tr><th>Category</th><th>Budget</th><th>Spent</th><th>Remaining</th><th>Status</th></tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+            
+            <!--Budget Alerts-->
+            <div class="card mb-3">
+              <div class="card-header">
+                <h5>Budget Alerts</h5>
+              </div>
+              <div class="card-body">
+                <button class="btn btn-warning mb-3" onclick="loadBudgetAlerts()">Load Budget Alerts</button>
+                <table class="table table-bordered" id="budgetAlertsTable">
+                  <thead>
+                    <tr><th>Category</th><th>Budget Limit</th><th>Current Spending</th><th>Alert Date</th></tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+            
+            <!--Archive Transactions-->
+            <div class="card mb-3">
+              <div class="card-header">
+                <h5>Archive Old Transactions</h5>
+              </div>
+              <div class="card-body">
+                <form id="archiveForm" class="row g-2">
+                  <div class="col-md-6">
+                    <input type="number" name="monthsOld" class="form-control" placeholder="Months Old (default 12)" />
+                  </div>
+                  <div class="col-md-6">
+                    <button type="submit" class="btn btn-info w-100">Archive Transactions</button>
+                  </div>
+                </form>
+                <div id="archiveResult" class="mt-2"></div>
+              </div>
+            </div>
+            
+            <!-- Transfer Category-->
+            <div class="card mb-3">
+              <div class="card-header">
+                <h5>Transfer Transaction Category</h5>
+              </div>
+              <div class="card-body">
+                <form id="transferForm" class="row g-2">
+                  <div class="col-md-6">
+                    <input type="number" name="transactionID" class="form-control" placeholder="Transaction ID" required />
+                  </div>
+                  <div class="col-md-6">
+                    <input type="number" name="newCategoryID" class="form-control" placeholder="New Category ID" required />
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-success w-100">Transfer Category</button>
+                  </div>
+                </form>
+                <div id="transferResult" class="mt-2"></div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- Needed from top sources, all came from same .js website for frameworks, help, and documentation -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
