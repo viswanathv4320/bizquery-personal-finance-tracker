@@ -141,7 +141,7 @@ npm start
 
 ## Team
 
-**My role (Ben Hug):** Database Design & SQL — relational schema, BCNF normalization, stored procedures, triggers, DB transactions, and query optimization via EXPLAIN ANALYZE benchmarking.
+**My role (Viswanath Vadlamani):** Frontend & UI/UX — user interface design, implementing mockups in HTML/CSS/JS, and integration with the backend.
 
 | Name | Role |
 |---|---|
